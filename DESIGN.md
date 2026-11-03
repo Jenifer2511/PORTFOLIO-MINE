@@ -1,37 +1,47 @@
-# Direction: Logic, imagination, cobalt
+# Direction: Behind the pixels
 
-Jenifer’s web development, AI & Data Science, and creative media practice become six distinct scroll chapters. The opening pairs her name with her complete original portrait in a modest white frame. Large cobalt fields alternate with white project and learning chapters and a black editorial about chapter.
+An editorial portfolio in black and white, with small cobalt signals. A held title sequence introduces Jenifer through her actual portrait. The oversized name separates while two shutters uncover the photo. Its completed state is a modest, fully visible portrait with identity copy on either side on desktop and above/below on phones.
 
 ## Visual system
 
-- Palette: cobalt `#0047ff`, black `#101010`, and white `#ffffff`, as requested by the user. Neutral greys support secondary text and image frames. Original photographs and certificates keep their own colours.
-- Typography: locally hosted Manrope, tight display type, readable body copy, and explicit project-cover labels.
-- Photographs: original aspect ratios, `object-fit: contain`, full colour, no cutouts, masks, zoom, or filters. The desktop portrait frame is at most 360 pixels wide; the phone frame is at most 230 pixels wide. The award photo is at most 480 pixels wide.
-- Composition: equal outer margins, squared image frames, strong type, and space between content groups. Distinct layouts carry the sections rather than repeated card grids.
+- Backgrounds alternate black `#101010` and white `#ffffff` across the six chapters. There are no cobalt chapter backgrounds. Cobalt `#0047ff` appears only in small marks, arrows, status dots, and thin progress indicators. Original photographs retain their own colours.
+- Manrope is locally hosted. Large typography and generous frame margins carry the composition. There are no gradients, glass panels, fabricated UI screenshots, stock portraits, or fake social proof.
+- The original portrait frame is at most 340 pixels wide on desktop and 230 on phones. The award photograph is at most 460 pixels wide. Final-state photos and certificates are fully contained, never cut out or filtered.
 
-## Scroll sequence
+## Motion narrative
 
-1. Cobalt opening: staggered name and copy entrance, a scroll-linked brand rotation, and a complete framed portrait.
-2. White freelance work: a held viewport with a curved Three.js project ribbon. Scroll, drag, or previous/next controls select a real project destination. The gallery camera fits the selected cover within its canvas.
-3. Black about chapter: an independent scroll-linked arrival, the complete award photograph, a word-by-word statement, experience, facts, and toolkit.
-4. Cobalt technical projects: a held horizontal sequence on larger screens. Scroll position drives the project track and progress controls. Phones and short screens use vertical project sections.
-5. White learning chapter: a scroll-linked scale entrance, education, contained certificate thumbnails, original document dialogs, and creative recognition.
-6. Cobalt contact: a separate vertical arrival and large typographic close, followed by a black footer.
+| Content | Scroll behaviour |
+| --- | --- |
+| Landing title | Held viewport; oversized name separates in opposing directions. |
+| Original portrait | Two shutters open with scroll; the entire photo settles upright and stays visible. |
+| Supporting identity | Two entrances follow the portrait reveal at different timeline positions. |
+| Freelance work | White held chapter; curved Three.js ribbon turns with scroll and supports drag and controls. |
+| About heading | Words fold upward through text masks. |
+| Original award photograph | A bounded perspective hinge settles flat, without final-state image cropping. |
+| Personal statement | Words gain emphasis as reading progresses. |
+| Body copy | An ink wipe and a vertical entrance alternate. |
+| Personal facts | Numbers roll upward into their own fixed windows. |
+| Toolkit | Groups reveal in horizontal ink wipes. |
+| Technical projects | Horizontal held sequence on desktop; covers turn in depth while descriptions arrive independently. Phones use vertical project scenes. |
+| Education | A line grows with reading progress; milestones lift into position. |
+| Certificates | Each row folds into view at its own scroll position. |
+| Creative recognition | Award descriptions reveal in horizontal wipes. |
+| Contact | Letters rise and turn independently, the arrow rotates, and the closing rule draws across the page. |
 
-Native scrolling remains free; wheel events do not force visitors into a page. The fixed navigation follows each chapter and exposes all five destination links on desktop and in the phone/tablet menu.
+The opening is controlled by scroll, not a timer. Waiting leaves the photo at the same reveal position. Scrolling upward reverses it. A reveal control advances to the complete portrait, while chapter navigation can skip the held sequence. Native scrolling remains free.
 
-## Motion and implementation
+## Implementation
 
-React 19 owns the interface and state. Motion for React owns entrances, scroll values, chapter transitions, and the shared frame scheduler. Exactly one Lenis instance smooths scrolling. Three.js owns only the project gallery canvas. No GSAP is installed.
+React 19 owns the UI. Motion owns the scroll values and shared frame scheduler. Exactly one Lenis instance smooths scrolling. Three.js owns only the curved work canvas and loads near that section. Existing source images and public documents remain local and unchanged. No GSAP is installed.
 
-The gallery loads dynamically near the viewport. Rendering is visibility and change driven, pixel ratio is bounded, and effects dispose their GPU resources. The original DOM project links remain available until the first rendered frame and after WebGL failure.
+The previous generic chapter fade wrapper was removed. `Choreography.jsx` contains separate content-level recipes; the hero and horizontal project sequence have dedicated scroll timelines.
 
-The motion toggle and system reduced-motion preference remove pinned layouts and the WebGL scene. Complete photos, document access, and readable project descriptions remain available. Build-time React rendering provides the same semantic content before hydration and without JavaScript.
+Reduced motion and the motion toggle display completed, readable states immediately. They remove shutters, held layouts, and WebGL. Build-time React rendering and a no-JavaScript stylesheet provide the same complete content without hydration. Keyboard focus restores readable states for animated controls.
 
-## Visual review and validation
+## Validation
 
-Custom Playwright checks and screenshot reviews are used because the design skill’s bundled inspector scripts are unavailable through the installed cloud reader. No external design award or inspector score is claimed.
+Custom Playwright checks and screenshot reviews are used because the installed design skill’s bundled inspector resources are unavailable through its cloud reader. No third-party design award or score is claimed.
 
-The cobalt review checks the complete portrait at 1440, 768, 390, and 320 pixel widths; the gallery framing; the original award photograph; certificate thumbnails and document dialogs; chapter entrances; and the horizontal technical-project sequence. Automated browser validation also covers responsive overflow, keyboard access, motion preferences, WebGL loss, all 19 documents, original PDF downloads, pre-rendered content, and the optional portable React export.
+The opening is captured at five scroll positions on desktop and phone. Browser checks cover timer independence, pinning, reversal, full portrait visibility, text separation, monochrome chapter backgrounds, and distinct content motion. The existing gallery, native dialogs, document downloads, motion preferences, WebGL-loss fallback, and no-JavaScript access remain part of the checks.
 
-Project covers are authored title cards, not live website screenshots. Content provenance and the older downloadable resume’s differences are recorded in CONTENT-SOURCES.md.
+Project imagery remains clearly labelled authored title cards. CONTENT-SOURCES.md records its provenance and the older original resume PDF’s differences from the newer web content.

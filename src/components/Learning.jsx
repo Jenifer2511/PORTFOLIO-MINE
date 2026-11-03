@@ -1,302 +1,180 @@
-import ScrollPage from "./ScrollPage";
-import { memo } from "react";
-import { Reveal } from "./Primitives";
+import { memo, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useCinematic } from "../hooks/CinematicProvider";
+import { ScrollHeading, ScrollPiece, clamp } from "./Choreography";
+import { Arrow } from "./Primitives";
 
+const certificates = [
+  [
+    3,
+    "Python Full Stack Development",
+    "Networkz Systems · 120 hours · May 2026",
+    "jpg",
+  ],
+  [4, "UI/UX Design", "EDU TANTR Ventures · 2026", "jpg"],
+  [5, "AI & Machine Learning", "Entudio · March 2025", "jpg"],
+  [
+    7,
+    "Image Recognition with ML",
+    "Simplilearn SkillUp · September 2026",
+    "png",
+  ],
+  [8, "Ignite Bootcamp", "Wadhwani Foundation · March 2026", "jpg"],
+];
+const education = [
+  {
+    date: "2023 — 2027 / Pursuing",
+    title: "B.Tech, AI & Data Science",
+    description: "Rohini College of Engineering and Technology, Kanyakumari",
+    extra: "Honors in Creative Media · In progress",
+  },
+  {
+    date: "June 2025 / Internship",
+    title: "Web development",
+    description: "NSIC Technical Services Centre, Chennai",
+    document: 1,
+  },
+  {
+    date: "Internship training",
+    title: "UI/UX design",
+    description: "EDU TANTR",
+    document: 2,
+  },
+];
 const Learning = memo(function Learning({ onOpenCertificate }) {
+  const timeline = useRef(null);
+  const { reduced } = useCinematic();
+  const { scrollYProgress } = useScroll({
+    target: timeline,
+    offset: ["start 75%", "end 65%"],
+  });
+  const line = useTransform(scrollYProgress, (p) => `scaleY(${clamp(p)})`);
   return (
-    <ScrollPage
+    <section
       id="learning"
       className="learning-section"
-      data-theme="light"
+      data-theme="dark"
+      data-scroll-chapter
       aria-labelledby="learning-title"
     >
       <div className="frame">
+        <div className="chapter-label">
+          <span>05 / Always becoming</span>
+          <span>Stay curious. Keep building.</span>
+        </div>
         <div className="section-opening">
-          <Reveal as="h2" id="learning-title">
-            Always a student.
-          </Reveal>
-          <Reveal as="p">
+          <ScrollHeading
+            id="learning-title"
+            lines={["Never done", "learning."]}
+            mode="turn"
+          />
+          <ScrollPiece as="p" type="lift">
             Degrees, training, and little milestones.
-            <br /> There’s always something next.
-          </Reveal>
+            <br />
+            There’s always something next.
+          </ScrollPiece>
         </div>
         <div className="learning-layout">
-          <div className="education">
+          <div className="education" ref={timeline}>
             <h3>Where I’m growing</h3>
-            <Reveal as="div" className="education-item">
-              <span>2023 — 2027 · Pursuing</span>
-              <h4>B.Tech, AI & Data Science</h4>
-              <p>Rohini College of Engineering and Technology, Kanyakumari</p>
-              <p>Honors in Creative Media · In progress</p>
-            </Reveal>
-            <Reveal as="div" className="education-item">
-              <span>June 2025 · Internship</span>
-              <h4>Web development</h4>
-              <p>NSIC Technical Services Centre, Chennai</p>
-              <button
-                className="text-link certificate-open"
-                data-document="1"
-                onClick={() => onOpenCertificate(1)}
+            <div className="education-track" aria-hidden="true">
+              <motion.span
+                style={{ transform: reduced ? "scaleY(1)" : line }}
+              />
+            </div>
+            {education.map((item, index) => (
+              <ScrollPiece
+                className="education-item"
+                type="lift"
+                index={index}
+                key={item.title}
               >
-                View certificate{" "}
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </button>
-            </Reveal>
-            <Reveal as="div" className="education-item">
-              <span>Internship training</span>
-              <h4>UI/UX design</h4>
-              <p>EDU TANTR</p>
-              <button
-                className="text-link certificate-open"
-                data-document="2"
-                onClick={() => onOpenCertificate(2)}
-              >
-                View certificate{" "}
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </button>
-            </Reveal>
+                <i className="timeline-point" aria-hidden="true" />
+                <span>{item.date}</span>
+                <h4>{item.title}</h4>
+                <p>{item.description}</p>
+                {item.extra && <p>{item.extra}</p>}
+                {item.document && (
+                  <button
+                    className="text-link certificate-open"
+                    data-document={item.document}
+                    onClick={() => onOpenCertificate(item.document)}
+                  >
+                    View certificate <Arrow />
+                  </button>
+                )}
+              </ScrollPiece>
+            ))}
           </div>
           <div className="certification-list">
             <div className="list-heading">
               <h3>Learning, documented.</h3>
               <span>Original certificates</span>
             </div>
-            <Reveal
-              as="button"
-              className="cert-row certificate-open"
-              data-document="3"
-              onClick={() => onOpenCertificate(3)}
-            >
-              <img
-                src="/images/document-3.jpg"
-                alt=""
-                width="160"
-                height="110"
-                loading="lazy"
-              />
-              <span>
-                <strong>Python Full Stack Development</strong>
-                <small>Networkz Systems · 120 hours · May 2026</small>
-              </span>
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
-            </Reveal>
-            <Reveal
-              as="button"
-              className="cert-row certificate-open"
-              data-document="4"
-              onClick={() => onOpenCertificate(4)}
-            >
-              <img
-                src="/images/document-4.jpg"
-                alt=""
-                width="160"
-                height="110"
-                loading="lazy"
-              />
-              <span>
-                <strong>UI/UX Design</strong>
-                <small>EDU TANTR Ventures · 2026</small>
-              </span>
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
-            </Reveal>
-            <Reveal
-              as="button"
-              className="cert-row certificate-open"
-              data-document="5"
-              onClick={() => onOpenCertificate(5)}
-            >
-              <img
-                src="/images/document-5.jpg"
-                alt=""
-                width="160"
-                height="110"
-                loading="lazy"
-              />
-              <span>
-                <strong>AI & Machine Learning</strong>
-                <small>Entudio · March 2025</small>
-              </span>
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
-            </Reveal>
-            <Reveal
-              as="button"
-              className="cert-row certificate-open"
-              data-document="7"
-              onClick={() => onOpenCertificate(7)}
-            >
-              <img
-                src="/images/document-7.png"
-                alt=""
-                width="160"
-                height="110"
-                loading="lazy"
-              />
-              <span>
-                <strong>Image Recognition with ML</strong>
-                <small>Simplilearn SkillUp · September 2026</small>
-              </span>
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
-            </Reveal>
-            <Reveal
-              as="button"
-              className="cert-row certificate-open"
-              data-document="8"
-              onClick={() => onOpenCertificate(8)}
-            >
-              <img
-                src="/images/document-8.jpg"
-                alt=""
-                width="160"
-                height="110"
-                loading="lazy"
-              />
-              <span>
-                <strong>Ignite Bootcamp</strong>
-                <small>Wadhwani Foundation · March 2026</small>
-              </span>
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
-            </Reveal>
+            {certificates.map(([id, title, description, extension], index) => (
+              <ScrollPiece
+                as="button"
+                type="fold"
+                index={index}
+                className="cert-row certificate-open"
+                data-document={id}
+                onClick={() => onOpenCertificate(id)}
+                key={id}
+              >
+                <img
+                  src={`/images/document-${id}.${extension}`}
+                  alt=""
+                  width="160"
+                  height="110"
+                  loading="lazy"
+                />
+                <span>
+                  <strong>{title}</strong>
+                  <small>{description}</small>
+                </span>
+                <span aria-hidden="true">
+                  <Arrow />
+                </span>
+              </ScrollPiece>
+            ))}
             <button
               className="all-certificates text-link"
               id="all-certificates"
               onClick={() => onOpenCertificate(1)}
             >
-              Browse all certificates & awards{" "}
-              <span aria-hidden="true">
-                <svg
-                  className="inline-icon"
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 19 19 5M5 5h14v14" />
-                </svg>
-              </span>
+              Browse all certificates &amp; awards <Arrow />
             </button>
           </div>
         </div>
-      </div>
-      <Reveal as="div" className="recognition frame">
-        <p>Creative outside the code, too.</p>
-        <div>
-          <button
-            className="certificate-open"
-            data-document="19"
-            onClick={() => onOpenCertificate(19)}
-          >
-            <span>Data Visualization</span>
-            <strong>First prize · Spectra 2026</strong>
-          </button>
-          <button
-            className="certificate-open"
-            data-document="17"
-            onClick={() => onOpenCertificate(17)}
-          >
-            <span>AI Short Film</span>
-            <strong>Second prize · Spectra 2025</strong>
-          </button>
-          <button
-            className="certificate-open"
-            data-document="10"
-            onClick={() => onOpenCertificate(10)}
-          >
-            <span>T-Shirt Painting</span>
-            <strong>First prize · Sizzle 2026</strong>
-          </button>
+        <div className="recognition">
+          <ScrollHeading
+            as="p"
+            text="Creative outside the code, too."
+            mode="fold"
+          />
+          <div>
+            {[
+              [19, "Data Visualization", "First prize · Spectra 2026"],
+              [17, "AI Short Film", "Second prize · Spectra 2025"],
+              [10, "T-Shirt Painting", "First prize · Sizzle 2026"],
+            ].map(([id, title, result], index) => (
+              <ScrollPiece
+                as="button"
+                type="wipe"
+                index={index}
+                key={id}
+                className="certificate-open"
+                data-document={id}
+                onClick={() => onOpenCertificate(id)}
+              >
+                <span>{title}</span>
+                <strong>{result}</strong>
+              </ScrollPiece>
+            ))}
+          </div>
         </div>
-      </Reveal>
-    </ScrollPage>
+      </div>
+    </section>
   );
 });
 export default Learning;

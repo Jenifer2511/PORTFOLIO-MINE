@@ -1,46 +1,91 @@
-import ScrollPage from "./ScrollPage";
-import { memo } from "react";
-import { Reveal } from "./Primitives";
+import { memo, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useCinematic } from "../hooks/CinematicProvider";
+import { phase, ScrollPiece } from "./Choreography";
+import { Arrow } from "./Primitives";
 
-const Contact = memo(function Contact({ onCopyEmail }) {
+function ContactLetter({ letter, index, progress, reduced }) {
+  const transform = useTransform(progress, (value) => {
+    const p = phase(value, index * 0.025, 0.66 + index * 0.025);
+    return `translate3d(0,${(1 - p) * 112}%,0) rotateZ(${(1 - p) * (index % 2 ? 12 : -12)}deg)`;
+  });
   return (
-    <ScrollPage
+    <span className="contact-letter-window" aria-hidden="true">
+      <motion.span
+        data-animated="contact-letter"
+        style={{ transform: reduced ? "none" : transform }}
+      >
+        {letter === " " ? "\u00a0" : letter}
+      </motion.span>
+    </span>
+  );
+}
+const Contact = memo(function Contact({ onCopyEmail }) {
+  const section = useRef(null);
+  const { reduced } = useCinematic();
+  const { scrollYProgress } = useScroll({
+    target: section,
+    offset: ["start 92%", "start 18%"],
+  });
+  const arrow = useTransform(
+    scrollYProgress,
+    (p) => `rotate(${(1 - phase(p, 0.2, 0.9)) * 90}deg)`,
+  );
+  return (
+    <section
+      ref={section}
       id="contact"
       className="contact-section frame"
-      data-theme="blue"
+      data-theme="light"
+      data-scroll-chapter
       aria-labelledby="contact-title"
     >
+      <div className="chapter-label">
+        <span>06 / The next chapter</span>
+        <span>Yours, perhaps?</span>
+      </div>
       <div className="contact-top">
-        <p>
-          <span className="status-dot" aria-hidden="true"></span> Open to work,
+        <ScrollPiece as="p" type="fold">
+          <span className="status-dot" aria-hidden="true" /> Open to work,
           collaboration,
-          <br /> and interesting conversations.
-        </p>
+          <br />
+          and interesting conversations.
+        </ScrollPiece>
         <span>
           Your next idea.
-          <br /> Our next chapter.
+          <br />
+          Our next chapter.
         </span>
       </div>
       <a
         className="contact-title"
         href="mailto:jenijenifer483@gmail.com?subject=Let%E2%80%99s%20build%20something"
       >
-        <h2 id="contact-title">LET’S TALK.</h2>
-        <span aria-hidden="true">
-          <svg
-            className="inline-icon"
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 19 19 5M5 5h14v14" />
-          </svg>
-        </span>
+        <h2 id="contact-title" aria-label="LET’S TALK.">
+          {[..."LET’S TALK."].map((letter, index) => (
+            <ContactLetter
+              key={index}
+              letter={letter}
+              index={index}
+              progress={scrollYProgress}
+              reduced={reduced}
+            />
+          ))}
+        </h2>
+        <motion.span
+          className="contact-arrow"
+          aria-hidden="true"
+          style={{ transform: reduced ? "none" : arrow }}
+        >
+          <Arrow />
+        </motion.span>
       </a>
+      <ScrollPiece
+        type="line"
+        end="start 78%"
+        className="contact-rule"
+        aria-hidden="true"
+      />
       <div className="contact-bottom">
         <a href="mailto:jenijenifer483@gmail.com" className="contact-email">
           jenijenifer483@gmail.com
@@ -51,21 +96,7 @@ const Contact = memo(function Contact({ onCopyEmail }) {
           aria-label="Copy email address"
           onClick={onCopyEmail}
         >
-          Copy email{" "}
-          <span aria-hidden="true">
-            <svg
-              className="inline-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M8 8h12v12H8zM16 4H4v12" />
-            </svg>
-          </span>
+          Copy email <Arrow direction="copy" />
         </button>
         <div className="contact-socials">
           <a
@@ -73,57 +104,21 @@ const Contact = memo(function Contact({ onCopyEmail }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub{" "}
-            <svg
-              className="inline-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 19 19 5M5 5h14v14" />
-            </svg>
+            GitHub <Arrow />
           </a>
           <a
             href="https://www.linkedin.com/in/jeni-jenifer-b75a54299"
             target="_blank"
             rel="noopener noreferrer"
           >
-            LinkedIn{" "}
-            <svg
-              className="inline-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 19 19 5M5 5h14v14" />
-            </svg>
+            LinkedIn <Arrow />
           </a>
           <a href="/Jenifer-J-Resume.pdf" download>
-            Resume{" "}
-            <svg
-              className="inline-icon"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 19 19 5M5 5h14v14" />
-            </svg>
+            Resume <Arrow />
           </a>
         </div>
       </div>
-    </ScrollPage>
+    </section>
   );
 });
 export default Contact;

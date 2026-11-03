@@ -11,6 +11,6 @@ The user's required frontend stack is React + Lenis + animation libraries. Keep 
 - Validate with the production build and `npm run test:browser` when Playwright is available. Check mobile, reduced motion, native dialog focus, and WebGL failure fallbacks.
 - Each cloud task is isolated. Use the existing checkout; do not create a worktree unless the user asks.
 
-- Visual palette: black, white, and cobalt blue (#0047ff), per the user. Use substantial cobalt chapter backgrounds, not lime, mint, or coral accents.
-- Keep all original photos in full colour and fully visible. Use contained, bounded images; no cropping, portrait cutouts, zoom, background keying, or filters.
-- Give the page distinct scroll-triggered chapters with Motion and Lenis. Keep native scrolling and a reduced-motion alternative.
+- Visual palette: black, white, and cobalt blue (#0047ff), per the user. Keep the interface predominantly black and white. Cobalt is a minimal accent for arrows, small labels, status dots, and thin progress indicators; no cobalt chapter backgrounds.
+- Keep all original photos in full colour and fully visible. Use contained, bounded images; no final-state cropping, portrait cutouts, background keying, or filters. The user explicitly requests a scroll-triggered portrait reveal: temporary shutters may occlude the image during that sequence; the completed photo must be fully visible.
+- Give each content type a distinct, reversible scroll animation with Motion and Lenis. The opening must pin and reveal the portrait as scroll progress advances, not on a timer. Keep native scrolling and a reduced-motion alternative.

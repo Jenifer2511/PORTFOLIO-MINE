@@ -28,8 +28,8 @@ No stock photographs, generated people, testimonials, or invented professional r
 - Manrope is self-hosted from `@fontsource/manrope` under the SIL Open Font License. Its license is included in the dependency package.
 - The reel supplied visual inspiration for pacing and a curved project gallery only. No identity, footage, screenshots, artwork, or code was copied from it.
 
-## Cobalt scroll chapters
+## Monochrome scroll sequences
 
-The user's requested black, white, and cobalt blue palette defines the chapter backgrounds and original title-card artwork. All source photographs and certificates retain their original pixels and colour. They use bounded `object-fit: contain` frames without cropping, background removal, image zoom, or filters. Motion animates the typography and chapter containers; Three.js renders only the project-cover gallery.
+The user's revised direction is black and white with minimal cobalt accents. Chapter backgrounds and project title cards are monochrome, with small cobalt marks and controls. All original photographs and certificates retain their source pixels and colours. The opening uses temporary sliding shutters, explicitly requested by the user as a scroll-triggered portrait reveal. At the completed stage, both shutters are completely outside the original image. Photos use bounded `object-fit: contain` frames without final-state cropping, background removal, or filters. Three.js renders only the work-cover gallery.
 
 The portable HTML embeds these same source assets; it does not fetch replacement imagery from third parties.

@@ -1,11 +1,5 @@
-import { memo, useEffect, useRef } from "react";
-import {
-  motion,
-  useAnimate,
-  useInView,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useCinematic } from "../hooks/CinematicProvider";
 export const EASE = [0.23, 1, 0.32, 1];
 export function Arrow({ direction = "up-right", ...props }) {
@@ -48,51 +42,12 @@ export function Star() {
     </svg>
   );
 }
-export const Reveal = memo(function Reveal({ as = "div", children, ...props }) {
-  const { reduced } = useCinematic();
-  const [scope, animate] = useAnimate();
-  const inView = useInView(scope, { once: true, amount: 0.08 });
-  const played = useRef(false);
-  useEffect(() => {
-    if (reduced) {
-      animate(
-        scope.current,
-        { opacity: 1, transform: "translateY(0)" },
-        { duration: 0 },
-      );
-      return;
-    }
-    if (!inView || played.current) return;
-    played.current = true;
-    const image = as === "figure";
-    const controls = animate(
-      scope.current,
-      image
-        ? {
-            opacity: [0.6, 1],
-            transform: ["translateY(20px)", "translateY(0)"],
-          }
-        : {
-            opacity: [0.45, 1],
-            transform: ["translateY(20px)", "translateY(0)"],
-          },
-      { duration: image ? 1 : 0.75, ease: EASE },
-    );
-    return () => controls.stop();
-  }, [inView, reduced, animate, scope, as]);
-  const Tag = as;
-  return (
-    <Tag ref={scope} {...props}>
-      {children}
-    </Tag>
-  );
-});
 const statement =
   "I build thoughtful websites that feel intuitive and make everyday tasks easier.";
 function Word({ progress, index, count, children }) {
   const { reduced } = useCinematic();
   const opacity = useTransform(progress, (value) =>
-    value >= index / count ? 1 : 0.45,
+    Math.max(0.16, Math.min(1, (value - index / count) * count * 2 + 0.16)),
   );
   return (
     <motion.span aria-hidden="true" style={{ opacity: reduced ? 1 : opacity }}>

@@ -3,7 +3,8 @@ import { motion, useInView, useScroll, useTransform } from "motion/react";
 import works from "../works";
 import { useCinematic, useMediaQuery } from "../hooks/CinematicProvider";
 import { useWebGLScene } from "../hooks/useWebGLScene";
-import { Arrow, EASE, Reveal } from "./Primitives";
+import { Arrow, EASE } from "./Primitives";
+import { ScrollHeading, ScrollPiece } from "./Choreography";
 
 const WorkGallery = memo(function WorkGallery() {
   const { reduced, lenis } = useCinematic();
@@ -77,14 +78,20 @@ const WorkGallery = memo(function WorkGallery() {
       ref={section}
     >
       <div className="work-sticky">
+        <div className="chapter-label frame">
+          <span>02 / Selected work</span>
+          <span>From a first idea to a real website.</span>
+        </div>
         <div className="work-heading frame">
-          <Reveal as="h2" id="work-title">
-            Made to be used.
-          </Reveal>
-          <p>
+          <ScrollHeading
+            id="work-title"
+            text="Made for the real world."
+            mode="lift"
+          />
+          <ScrollPiece as="p" type="fold">
             Selected freelance websites.
-            <br /> From first idea to the real world.
-          </p>
+            <br /> Designed, built, and delivered.
+          </ScrollPiece>
         </div>
         <div
           className={`gallery-stage${ready ? " has-webgl" : ""}`}

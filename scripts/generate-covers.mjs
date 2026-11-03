@@ -27,9 +27,9 @@ const page = await browser.newPage({
 const covers = [
   {
     id: "srinava",
-    bg: "#0047ff",
+    bg: "#101010",
     color: "#ffffff",
-    html: '<header><b>Srinava Industries</b><span>Business website ↗</span></header><main><div class="small">Built for industry.<br>Designed for the web.</div><h1 style="font-size:180px;margin-top:36px;letter-spacing:-14px">Srinava<span style="font-size:112px;display:block;letter-spacing:-6px">Industries.</span></h1><span class="mark" style="color:#ffffff">✳</span></main><footer><span>Digital presence. Real business.</span><span>srinavaindustries.com</span></footer>',
+    html: '<header><b>Srinava Industries</b><span>Business website ↗</span></header><main><div class="small">Built for industry.<br>Designed for the web.</div><h1 style="font-size:180px;margin-top:36px;letter-spacing:-14px">Srinava<span style="font-size:112px;display:block;letter-spacing:-6px">Industries.</span></h1><span class="mark" style="color:#0047ff">✳</span></main><footer><span>Digital presence. Real business.</span><span>srinavaindustries.com</span></footer>',
   },
   {
     id: "outfit",
@@ -40,13 +40,13 @@ const covers = [
   {
     id: "sdk",
     bg: "#ffffff",
-    color: "#0047ff",
+    color: "#101010",
     html: '<header><b>SD-K INDUSTRIES</b><span>Business website ↗</span></header><main><h1 style="font-size:260px;letter-spacing:-24px;line-height:1">SD—K</h1><div style="display:flex;justify-content:space-between;margin-top:36px"><span style="font-size:54px;letter-spacing:-2px;line-height:1.1">Built on<br>precision.</span><span class="small" style="text-align:right;align-self:end">Responsive design.<br>Dependable development.</span></div></main><footer><span>A stronger digital foundation.</span><span>sd-kindustries.vercel.app</span></footer>',
   },
   {
     id: "film",
-    bg: "#0047ff",
-    color: "#ffffff",
+    bg: "#ffffff",
+    color: "#101010",
     html: '<header><b>Filmaking</b><span>Creative website ↗</span></header><main><div style="display:flex;gap:22px;align-items:center"><span style="font-size:72px;line-height:1">↗</span><span class="small">A space for<br>visual storytelling.</span></div><h1 style="font-size:145px;letter-spacing:-10px;line-height:.96;margin-top:32px">STORIES.<br>IN MOTION.</h1></main><footer><span>Creativity, frame by frame.</span><span>filmaking.vercel.app</span></footer>',
   },
 ];

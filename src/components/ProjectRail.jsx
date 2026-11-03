@@ -8,7 +8,54 @@ import {
 import notes from "../data/projects";
 import { useCinematic, useMediaQuery } from "../hooks/CinematicProvider";
 import { useMeasurements } from "../hooks/useMeasurements";
-import { Arrow, Reveal } from "./Primitives";
+import { Arrow } from "./Primitives";
+import { phase, ScrollHeading, ScrollPiece } from "./Choreography";
+
+function ProjectLayer({
+  className,
+  children,
+  index,
+  progress,
+  compact,
+  type = "art",
+  ...props
+}) {
+  const ref = useRef(null);
+  const { reduced } = useCinematic();
+  const { scrollYProgress: vertical } = useScroll({
+    target: ref,
+    offset: ["start 94%", "start 60%"],
+  });
+  const entry = useTransform(() =>
+    compact || index === 0
+      ? vertical.get()
+      : phase(progress.get() * 3 - index, -0.78, -0.05),
+  );
+  const transform = useTransform(entry, (value) => {
+    const n = 1 - Math.max(0, Math.min(1, value));
+    return type === "art"
+      ? `perspective(1000px) translate3d(0,${n * 36}px,0) rotateY(${n * 16}deg)`
+      : `translate3d(${n * 48}px,${n * 20}px,0)`;
+  });
+  const opacity = useTransform(
+    entry,
+    (value) => 0.2 + Math.max(0, Math.min(1, value)) * 0.8,
+  );
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      {...props}
+      data-animated={`project-${type}`}
+      style={{
+        transform: reduced ? "none" : transform,
+        opacity: reduced ? 1 : opacity,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const covers = {
   resume: {
@@ -98,19 +145,25 @@ const ProjectRail = memo(function ProjectRail({ onOpenProject }) {
       id="projects"
       className="projects-section"
       aria-labelledby="projects-title"
-      data-theme="blue"
+      data-theme="light"
       data-scroll-chapter
       ref={section}
     >
       <div className="projects-sticky frame">
+        <div className="chapter-label">
+          <span>04 / Into the code</span>
+          <span>Experiments with real purpose.</span>
+        </div>
         <div className="section-opening">
-          <Reveal as="h2" id="projects-title">
-            Beyond the interface.
-          </Reveal>
-          <Reveal as="p">
+          <ScrollHeading
+            id="projects-title"
+            text="Beyond the interface."
+            mode="fold"
+          />
+          <ScrollPiece as="p" type="wipe">
             Personal and academic projects.
             <br /> Exploring what code can do.
-          </Reveal>
+          </ScrollPiece>
         </div>
         <div className="projects-viewport">
           <motion.div
@@ -129,7 +182,10 @@ const ProjectRail = memo(function ProjectRail({ onOpenProject }) {
                   }}
                   onFocusCapture={(event) => focusCard(index, event)}
                 >
-                  <div
+                  <ProjectLayer
+                    index={index}
+                    progress={scrollYProgress}
+                    compact={compact}
                     className={`project-art ${id === "chain" ? "chain" : id}-art`}
                     aria-hidden="true"
                   >
@@ -146,8 +202,14 @@ const ProjectRail = memo(function ProjectRail({ onOpenProject }) {
                         <Arrow direction={cover.symbol || "up-right"} />
                       )}
                     </span>
-                  </div>
-                  <div className="project-details">
+                  </ProjectLayer>
+                  <ProjectLayer
+                    className="project-details"
+                    index={index}
+                    progress={scrollYProgress}
+                    compact={compact}
+                    type="details"
+                  >
                     <span className="project-category">{cover.category}</span>
                     <h3>
                       {cover.heading.map((line, i) => (
@@ -169,7 +231,7 @@ const ProjectRail = memo(function ProjectRail({ onOpenProject }) {
                         <Arrow />
                       </span>
                     </button>
-                  </div>
+                  </ProjectLayer>
                 </article>
               );
             })}

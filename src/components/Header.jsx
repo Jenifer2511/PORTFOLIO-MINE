@@ -14,7 +14,7 @@ const Header = memo(function Header({ menuOpen, setMenuOpen }) {
   const { reduced, systemReduced, toggleMotion, lenis } = useCinematic();
   const mobile = useMediaQuery("(max-width: 900px)");
   const [chapter, setChapter] = useState({
-    theme: "blue",
+    theme: "dark",
     id: "home",
     scrolled: false,
   });
@@ -27,7 +27,7 @@ const Header = memo(function Header({ menuOpen, setMenuOpen }) {
     for (const section of positions.current)
       if (y + 64 >= section.top) current = section;
     const next = {
-      theme: current?.theme || "blue",
+      theme: current?.theme || "dark",
       id: current?.id || "home",
       scrolled: y > 80,
     };

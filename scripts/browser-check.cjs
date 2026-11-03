@@ -47,9 +47,18 @@ const assert = require("node:assert/strict");
     "none",
   );
   assert.equal(await page.locator("[data-scroll-chapter]").count(), 6);
-  console.log(
-    "Hero: full-colour, uncropped original photo; six scroll chapters",
-  );
+  console.log("Hero: original full-colour photo and six scroll chapters");
+  const scrubHero = async (progress) => {
+    await page.locator("#home").evaluate(
+      (e, p) =>
+        scrollTo({
+          top: e.offsetTop + (e.offsetHeight - innerHeight) * p,
+          behavior: "instant",
+        }),
+      progress,
+    );
+    await page.waitForTimeout(120);
+  };
   for (const vp of [
     { width: 1440, height: 1000 },
     { width: 1366, height: 768 },
@@ -60,62 +69,186 @@ const assert = require("node:assert/strict");
     { width: 481, height: 900 },
     { width: 390, height: 844 },
     { width: 320, height: 740 },
+    { width: 320, height: 600 },
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(vp);
-    await page.waitForTimeout(120);
+    await scrubHero(0);
     assert.equal(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
       true,
-      `Overflow at ${vp.width}`,
+      `Initial overflow at ${vp.width}`,
     );
-    const photo = await page.locator(".hero-poster").evaluate((e) => {
-      const r = e.getBoundingClientRect();
+    const initial = await page
+      .locator(".shutter-left")
+      .evaluate((e) => getComputedStyle(e).transform);
+    if (vp.width === 1440 || vp.width === 390) {
+      await page.waitForTimeout(400);
+      assert.equal(
+        await page
+          .locator(".shutter-left")
+          .evaluate((e) => getComputedStyle(e).transform),
+        initial,
+        "Portrait must wait for scroll, not a timer",
+      );
+    }
+    await scrubHero(0.36);
+    assert.notEqual(
+      await page
+        .locator(".shutter-left")
+        .evaluate((e) => getComputedStyle(e).transform),
+      initial,
+      "Scrolling must open the shutters",
+    );
+    assert.equal(
+      await page
+        .locator(".hero-stage")
+        .evaluate((e) => Math.abs(e.getBoundingClientRect().top) < 1),
+      true,
+      "Opening stays pinned",
+    );
+    await scrubHero(0.8);
+    const image = await page.locator(".hero-poster").evaluate((e) => {
+      const r = e.getBoundingClientRect(),
+        left = document.querySelector(".shutter-left").getBoundingClientRect(),
+        right = document
+          .querySelector(".shutter-right")
+          .getBoundingClientRect();
+      const intersects = (node) => {
+        const b = node.getBoundingClientRect();
+        return (
+          r.left < b.right &&
+          r.right > b.left &&
+          r.top < b.bottom &&
+          r.bottom > b.top
+        );
+      };
       return {
         width: r.width,
         height: r.height,
+        x: r.x,
+        y: r.y,
+        right: r.right,
+        bottom: r.bottom,
         fit: getComputedStyle(e).objectFit,
         filter: getComputedStyle(e).filter,
+        clear: left.right <= r.left && right.left >= r.right,
+        overlapsCopy:
+          intersects(document.querySelector(".hero-left h2")) ||
+          intersects(document.querySelector(".hero-right p")),
       };
     });
-    assert.ok(photo.width <= 360 && photo.width <= vp.width - 48);
-    assert.ok(photo.height <= 440 && photo.height <= vp.height);
-    assert.equal(photo.fit, "contain");
-    assert.equal(photo.filter, "none");
-    console.log("Layout fits", vp.width, vp.height);
+    assert.ok(
+      image.width <= 340 && image.width <= vp.width - 48,
+      `Photo width ${JSON.stringify(vp)}`,
+    );
+    assert.ok(image.height <= 430 && image.height <= vp.height);
+    assert.ok(
+      image.y >= 64 && image.bottom <= vp.height - 50,
+      `Complete photo must fit the screen: ${JSON.stringify({ vp, image })}`,
+    );
+    assert.equal(image.fit, "contain");
+    assert.equal(image.filter, "none");
+    assert.equal(
+      image.clear,
+      true,
+      "Shutters completely uncover the original photo",
+    );
+    assert.equal(
+      image.overlapsCopy,
+      false,
+      `Text must not cover the completed portrait: ${JSON.stringify(vp)}`,
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+      `Revealed overflow at ${vp.width}`,
+    );
+    await scrubHero(0);
+    assert.equal(
+      await page
+        .locator(".shutter-left")
+        .evaluate((e) => getComputedStyle(e).transform),
+      initial,
+      "Scrolling back must reverse the reveal",
+    );
+    console.log(
+      "Pinned portrait reveal fits and reverses",
+      vp.width,
+      vp.height,
+    );
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
-  for (const id of ["about", "learning", "contact"]) {
-    await page
-      .locator("#" + id)
-      .evaluate((e) =>
-        scrollTo({ top: e.offsetTop - innerHeight * 0.6, behavior: "instant" }),
-      );
+  await page.goto(url, { waitUntil: "networkidle" });
+  await page
+    .getByRole("button", { name: "Scroll to reveal", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      Number(
+        getComputedStyle(document.querySelector(".hero-final-copy")).opacity,
+      ) > 0.98,
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        scrollY -
+          (document.querySelector("#home").offsetHeight - innerHeight) * 0.78,
+      ) < 1,
+  );
+  await page.waitForTimeout(150);
+  const backgrounds = await page
+    .locator("main > section")
+    .evaluateAll((nodes) =>
+      nodes.map((e) => getComputedStyle(e).backgroundColor),
+    );
+  assert.deepEqual(backgrounds, [
+    "rgb(16, 16, 16)",
+    "rgb(255, 255, 255)",
+    "rgb(16, 16, 16)",
+    "rgb(255, 255, 255)",
+    "rgb(16, 16, 16)",
+    "rgb(255, 255, 255)",
+  ]);
+  console.log(
+    "Monochrome chapters; reveal control reaches the completed portrait",
+  );
+  for (const [target, animated] of [
+    ["#about-title", "#about-title [data-animated]"],
+    [".about-photo", ".about-photo"],
+    [".about-facts", ".about-facts strong"],
+    [".cert-row", ".cert-row"],
+  ]) {
+    const top = await page
+      .locator(target)
+      .first()
+      .evaluate((e) => e.getBoundingClientRect().top + scrollY);
+    await page.evaluate(
+      (y) => scrollTo({ top: y, behavior: "instant" }),
+      top - 1000 * 0.94,
+    );
     await page.waitForTimeout(120);
     const entering = await page
-      .locator("#" + id + " > .chapter-content")
-      .evaluate((e) => ({
-        transform: getComputedStyle(e).transform,
-        opacity: Number(getComputedStyle(e).opacity),
-      }));
-    await page
-      .locator("#" + id)
-      .evaluate((e) => scrollTo({ top: e.offsetTop, behavior: "instant" }));
-    await page.waitForTimeout(120);
-    const settled = await page
-      .locator("#" + id + " > .chapter-content")
-      .evaluate((e) => ({
-        transform: getComputedStyle(e).transform,
-        opacity: Number(getComputedStyle(e).opacity),
-      }));
-    assert.notEqual(
-      entering.transform,
-      settled.transform,
-      id + " scroll transform",
+      .locator(animated)
+      .first()
+      .evaluate((e) => getComputedStyle(e).transform);
+    await page.evaluate(
+      (y) => scrollTo({ top: y, behavior: "instant" }),
+      top - 1000 * 0.3,
     );
-    assert.ok(settled.opacity > entering.opacity, id + " scroll opacity");
+    await page.waitForTimeout(120);
+    assert.notEqual(
+      await page
+        .locator(animated)
+        .first()
+        .evaluate((e) => getComputedStyle(e).transform),
+      entering,
+      target + " scroll animation",
+    );
   }
   assert.equal(
     await page
@@ -140,7 +273,7 @@ const assert = require("node:assert/strict");
     true,
   );
   console.log(
-    "Chapters: independent scroll-linked entrances; complete full-colour photos and certificates",
+    "Content: folded headlines, hinged photo, number reels, and dimensional certificates respond to scroll",
   );
   await page.locator("#work").evaluate((e) => scrollTo(0, e.offsetTop));
   await page.waitForSelector(".has-webgl");

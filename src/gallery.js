@@ -88,7 +88,7 @@ export async function createGallery({
       powerPreference: "low-power",
     });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-    renderer.setClearColor(0xeeeee7, 0);
+    renderer.setClearColor(0xffffff, 0);
     scene = new THREE.Scene();
     group = new THREE.Group();
     scene.add(group);
