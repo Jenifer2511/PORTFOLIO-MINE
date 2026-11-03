@@ -1,0 +1,22 @@
+const documentLabels = {
+  1: "Web Development Internship · NSIC",
+  2: "UI/UX Design Internship · EDU TANTR",
+  3: "Python Full Stack Development · Networkz Systems",
+  4: "UI/UX Design · EDU TANTR Ventures",
+  5: "AI & Machine Learning · Entudio",
+  6: "UI and UX Design · ALO Info-Tech",
+  7: "Image Recognition using Machine Learning · Simplilearn",
+  8: "Ignite Bootcamp · Wadhwani Foundation",
+  9: "MedXBotathon · Medical Robotics Hackathon",
+  10: "T-Shirt Painting · First Prize",
+  11: "Face Painting · Second Prize",
+  12: "Face Painting · First Prize",
+  13: "Collage Making · Second Prize",
+  14: "Bouquet Making · Sizzle",
+  15: "AI Memes · Spectra 2025",
+  16: "AI Short Film · Award Presentation",
+  17: "AI Short Film · Second Prize Certificate",
+  18: "Data Visualization · Award Presentation",
+  19: "Data Visualization · Event Certificate",
+};
+export default documentLabels;
