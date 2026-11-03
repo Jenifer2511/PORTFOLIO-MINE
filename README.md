@@ -23,19 +23,20 @@ Deploy `dist/` to a static host. No API keys, database, or backend service are n
 - `src/main.jsx`: React root and hydration, wrapped in StrictMode.
 - `src/App.jsx`: application state and component composition.
 - `src/components/Header.jsx`: responsive navigation and active chapter.
-- `src/components/Hero.jsx`: portrait scene and Motion scroll transforms.
+- `src/components/Hero.jsx`: bounded original portrait and animated typography.
 - `src/components/WorkGallery.jsx`: React gallery selection and Three.js host.
 - `src/components/ProjectRail.jsx`: Motion-driven horizontal project sequence.
 - `src/components/About.jsx`, `Learning.jsx`, `Contact.jsx`: original personal content.
+- `src/components/ScrollPage.jsx`: independent scroll-linked chapter entrances.
 - `src/components/Dialogs.jsx`: React-controlled native dialogs and document navigation.
 - `src/components/Primitives.jsx`: reusable Motion reveals, icons, and word reveal.
 - `src/hooks/CinematicProvider.jsx`: motion preferences and one Lenis instance, driven by Motion's frame scheduler.
 - `src/hooks/useWebGLScene.js`: abortable React scene lifecycle, readiness state, and GPU cleanup.
-- `src/portrait.js`, `src/gallery.js`: custom Three.js renderers and shaders; these own their canvas, not the React UI.
+- `src/gallery.js`: the custom Three.js gallery renderer and shaders; it owns its canvas, not the React UI.
 - `src/data/`: project and certificate content; `src/documents.json` and `works.js`: asset/project inventories.
 - `vite.config.js`, `src/entry-server.jsx`: build-time React rendering for SEO and no-JavaScript content. The client hydrates that same React tree.
 
-The page keeps the full-screen cinematic portrait, panoramic draggable project ribbon, horizontal technical projects, original certificates, resume download, and contact links. Motion off and system reduced motion dispose the WebGL scenes and use static layouts. Short screens and phones use a vertical project flow.
+The palette is black, white, and cobalt blue (`#0047ff`). Six scroll chapters combine animated typography, a pinned draggable Three.js project ribbon, a horizontal technical-project sequence, and independent chapter entrances. The original portrait, award photograph, and certificate images remain in full colour, uncropped, and inside bounded frames. The portrait is at most 360 pixels wide on desktop and 230 on phones. Motion off and system reduced motion dispose the gallery and use static layouts. Short screens and phones use a vertical technical-project flow with section and item entrances.
 
 ## Validate
 
@@ -46,13 +47,13 @@ npm run export:standalone
 npm run test:browser
 ```
 
-Set `TARGET_URL` and `CHROMIUM_PATH` if needed. Playwright is optional for normal development/builds. The checks cover responsive layouts, drag interaction, project navigation, keyboard focus, all 19 document images, both original PDFs, motion preferences, WebGL context loss, pre-rendered content, and the optional standalone export.
+Set `TARGET_URL` and `CHROMIUM_PATH` if needed. Playwright is optional for normal development/builds. The checks cover responsive layouts, complete image display, scroll-linked chapters, drag interaction, project navigation, keyboard focus, all 19 document images, both original PDFs, motion preferences, WebGL context loss, pre-rendered content, and the optional standalone export.
 
 ## Content notes
 
 See `CONTENT-SOURCES.md`. The original photos and certificates came from the user's existing portfolio and uploads. The page uses the newer resume screenshot's seven websites and CGPA 8.39. The original downloadable resume PDF still says four websites and 8.34; replace it when the latest PDF is supplied.
 
-Project covers are authored title cards, clearly labelled as covers. They are not screenshots of the external client websites, which this environment could not load. The portrait treatment is tuned to the supplied image; review it when changing the crop.
+Project covers are authored title cards, clearly labelled as covers. They are not screenshots of the external client websites, which this environment could not load. Photos retain their original aspect ratios and use `object-fit: contain`; there is no portrait shader, background key, grayscale filter, or photo zoom.
 
 ## Optional portable preview
 

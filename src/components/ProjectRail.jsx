@@ -98,7 +98,8 @@ const ProjectRail = memo(function ProjectRail({ onOpenProject }) {
       id="projects"
       className="projects-section"
       aria-labelledby="projects-title"
-      data-theme="light"
+      data-theme="blue"
+      data-scroll-chapter
       ref={section}
     >
       <div className="projects-sticky frame">

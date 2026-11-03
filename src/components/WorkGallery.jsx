@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "motion/react";
 import works from "../works";
 import { useCinematic, useMediaQuery } from "../hooks/CinematicProvider";
 import { useWebGLScene } from "../hooks/useWebGLScene";
-import { Arrow, EASE } from "./Primitives";
+import { Arrow, EASE, Reveal } from "./Primitives";
 
 const WorkGallery = memo(function WorkGallery() {
   const { reduced, lenis } = useCinematic();
@@ -72,12 +72,15 @@ const WorkGallery = memo(function WorkGallery() {
       id="work"
       className="work-section"
       data-theme="light"
+      data-scroll-chapter
       aria-labelledby="work-title"
       ref={section}
     >
       <div className="work-sticky">
         <div className="work-heading frame">
-          <h2 id="work-title">Made to be used.</h2>
+          <Reveal as="h2" id="work-title">
+            Made to be used.
+          </Reveal>
           <p>
             Selected freelance websites.
             <br /> From first idea to the real world.

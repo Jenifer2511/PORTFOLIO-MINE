@@ -6,14 +6,15 @@ import { Arrow, EASE, Star } from "./Primitives";
 const links = [
   { id: "work", label: "Work" },
   { id: "about", label: "About" },
+  { id: "projects", label: "Projects" },
   { id: "learning", label: "Learning" },
   { id: "contact", label: "Let’s talk" },
 ];
 const Header = memo(function Header({ menuOpen, setMenuOpen }) {
   const { reduced, systemReduced, toggleMotion, lenis } = useCinematic();
-  const mobile = useMediaQuery("(max-width: 480px)");
+  const mobile = useMediaQuery("(max-width: 900px)");
   const [chapter, setChapter] = useState({
-    theme: "dark",
+    theme: "blue",
     id: "home",
     scrolled: false,
   });
@@ -26,8 +27,8 @@ const Header = memo(function Header({ menuOpen, setMenuOpen }) {
     for (const section of positions.current)
       if (y + 64 >= section.top) current = section;
     const next = {
-      theme: current?.theme || "dark",
-      id: current?.id === "projects" ? "work" : current?.id || "home",
+      theme: current?.theme || "blue",
+      id: current?.id || "home",
       scrolled: y > 80,
     };
     if (
@@ -75,7 +76,7 @@ const Header = memo(function Header({ menuOpen, setMenuOpen }) {
       }
     };
     const onResize = () => {
-      if (innerWidth > 480) setMenuOpen(false);
+      if (innerWidth > 900) setMenuOpen(false);
     };
     document.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize, { passive: true });

@@ -153,7 +153,12 @@ export async function createGallery({
       const { width, height } = host.getBoundingClientRect();
       if (!width || !height) return;
       camera.aspect = width / height;
-      const worldWidth = width < 600 ? 6.4 : width < 1000 ? 8.4 : 10.4;
+      // Fit the whole selected cover in both dimensions, even on short screens.
+      const worldWidth = Math.max(
+        width < 600 ? 6.4 : 10.4,
+        camera.aspect * 4.6,
+        (5.2 * width) / 620,
+      );
       camera.fov = THREE.MathUtils.radToDeg(
         2 * Math.atan(worldWidth / (16 * camera.aspect)),
       );

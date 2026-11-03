@@ -11,7 +11,7 @@
 
 The original portfolio embedded assets as data URLs. They were decoded into local files without modification. `src/documents.json` maps every image to its original alt text.
 
-- `portrait.jpg`: original professional portrait of Jenifer J. Rendered in grayscale with CSS, with full color on hover.
+- `portrait.jpg`: original professional portrait of Jenifer J. Displayed in full colour, uncropped, inside a bounded white frame.
 - `document-1.jpg` to `document-9.jpg` (document 7 is PNG): internship certificates, course certificates, bootcamp, and hackathon participation.
 - `document-10.jpg` through `document-15.jpg`: creative and technical event certificates.
 - `document-16.jpg`, `document-18.jpg`: original award presentation photographs.
@@ -28,8 +28,8 @@ No stock photographs, generated people, testimonials, or invented professional r
 - Manrope is self-hosted from `@fontsource/manrope` under the SIL Open Font License. Its license is included in the dependency package.
 - The reel supplied visual inspiration for pacing and a curved project gallery only. No identity, footage, screenshots, artwork, or code was copied from it.
 
-## Cinematic edition
+## Cobalt scroll chapters
 
-The full-screen opening samples the original `portrait.jpg` in a WebGL shader. The treatment is monochrome with a luminance key restricted to the outer silhouette; the face and torso are kept opaque. Pointer refraction and scroll framing are bounded. No generated face, replacement person, background illustration, or external image was introduced. The original photograph is retained as the reduced-motion and WebGL-loss fallback.
+The user's requested black, white, and cobalt blue palette defines the chapter backgrounds and original title-card artwork. All source photographs and certificates retain their original pixels and colour. They use bounded `object-fit: contain` frames without cropping, background removal, image zoom, or filters. Motion animates the typography and chapter containers; Three.js renders only the project-cover gallery.
 
 The portable HTML embeds these same source assets; it does not fetch replacement imagery from third parties.

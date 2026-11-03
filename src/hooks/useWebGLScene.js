@@ -17,13 +17,9 @@ export function useWebGLScene(
     const signal = controller.signal;
     let instance;
     (async () => {
-      const module =
-        kind === "portrait"
-          ? await import("../portrait.js")
-          : await import("../gallery.js");
+      const module = await import("../gallery.js");
       if (signal.aborted) return;
-      const create =
-        kind === "portrait" ? module.createPortrait : module.createGallery;
+      const create = module.createGallery;
       instance = await create({
         host: host.current,
         signal,

@@ -57,9 +57,7 @@ export const Reveal = memo(function Reveal({ as = "div", children, ...props }) {
     if (reduced) {
       animate(
         scope.current,
-        as === "figure"
-          ? { clipPath: "inset(0)" }
-          : { opacity: 1, transform: "translateY(0)" },
+        { opacity: 1, transform: "translateY(0)" },
         { duration: 0 },
       );
       return;
@@ -70,7 +68,10 @@ export const Reveal = memo(function Reveal({ as = "div", children, ...props }) {
     const controls = animate(
       scope.current,
       image
-        ? { clipPath: ["inset(0 0 12% 0)", "inset(0)"] }
+        ? {
+            opacity: [0.6, 1],
+            transform: ["translateY(20px)", "translateY(0)"],
+          }
         : {
             opacity: [0.45, 1],
             transform: ["translateY(20px)", "translateY(0)"],

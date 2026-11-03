@@ -1,9 +1,10 @@
+import ScrollPage from "./ScrollPage";
 import { memo } from "react";
 import { Reveal } from "./Primitives";
 
 const Learning = memo(function Learning({ onOpenCertificate }) {
   return (
-    <section
+    <ScrollPage
       id="learning"
       className="learning-section"
       data-theme="light"
@@ -295,7 +296,7 @@ const Learning = memo(function Learning({ onOpenCertificate }) {
           </button>
         </div>
       </Reveal>
-    </section>
+    </ScrollPage>
   );
 });
 export default Learning;

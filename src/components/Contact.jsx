@@ -1,12 +1,13 @@
+import ScrollPage from "./ScrollPage";
 import { memo } from "react";
 import { Reveal } from "./Primitives";
 
 const Contact = memo(function Contact({ onCopyEmail }) {
   return (
-    <section
+    <ScrollPage
       id="contact"
       className="contact-section frame"
-      data-theme="dark"
+      data-theme="blue"
       aria-labelledby="contact-title"
     >
       <div className="contact-top">
@@ -122,7 +123,7 @@ const Contact = memo(function Contact({ onCopyEmail }) {
           </a>
         </div>
       </div>
-    </section>
+    </ScrollPage>
   );
 });
 export default Contact;

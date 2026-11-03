@@ -1,9 +1,10 @@
+import ScrollPage from "./ScrollPage";
 import { memo } from "react";
 import { Reveal, WordStatement } from "./Primitives";
 
 const About = memo(function About() {
   return (
-    <section
+    <ScrollPage
       id="about"
       className="about-section frame"
       data-theme="dark"
@@ -131,7 +132,7 @@ const About = memo(function About() {
           </div>
         </div>
       </Reveal>
-    </section>
+    </ScrollPage>
   );
 });
 export default About;

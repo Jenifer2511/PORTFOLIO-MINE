@@ -1,55 +1,37 @@
-# Direction: Curiosity, made tangible
+# Direction: Logic, imagination, cobalt
 
-The source is Jenifer's combination of web development, AI & Data Science, and creative media. Her name and actual work carry the page: an oversized name opens it, a three-dimensional collection makes the projects tangible, an original award photograph shows creative work beyond the browser, and the contact section closes with an invitation.
+Jenifer’s web development, AI & Data Science, and creative media practice become six distinct scroll chapters. The opening pairs her name with her complete original portrait in a modest white frame. Large cobalt fields alternate with white project and learning chapters and a black editorial about chapter.
 
-Visual system: warm white #eeeee7, charcoal #181818, and lime #c2f564. Manrope throughout. Equal outer margins, large tight display type, square imagery, space instead of dividers, and simple arrow controls. Distinct section layouts avoid repeated feature-card grids.
+## Visual system
 
-Sequence: name and portrait → curved freelance gallery → about, photo, facts and toolkit → technical projects → education and original certificates → creative recognition → contact.
+- Palette: cobalt `#0047ff`, black `#101010`, and white `#ffffff`, as requested by the user. Neutral greys support secondary text and image frames. Original photographs and certificates keep their own colours.
+- Typography: locally hosted Manrope, tight display type, readable body copy, and explicit project-cover labels.
+- Photographs: original aspect ratios, `object-fit: contain`, full colour, no cutouts, masks, zoom, or filters. The desktop portrait frame is at most 360 pixels wide; the phone frame is at most 230 pixels wide. The award photo is at most 480 pixels wide.
+- Composition: equal outer margins, squared image frames, strong type, and space between content groups. Distinct layouts carry the sections rather than repeated card grids.
 
-Motion: Lenis is the sole smooth-scroll engine. Scroll position drives a physically curved Three.js ring and the word reveal. Motion for React handles entrances without hiding semantic content if scripts fail. CSS handles control feedback. No GSAP or second scroll engine is installed.
+## Scroll sequence
 
-The gallery is the signature interaction: scroll, drag, or use previous/next controls, then follow the selected project's actual URL. It has a DOM image-link fallback for reduced motion, no JavaScript, and WebGL failure. Rendering is visibility and change driven, with bounded pixel ratio and disposal of Three.js resources.
+1. Cobalt opening: staggered name and copy entrance, a scroll-linked brand rotation, and a complete framed portrait.
+2. White freelance work: a held viewport with a curved Three.js project ribbon. Scroll, drag, or previous/next controls select a real project destination. The gallery camera fits the selected cover within its canvas.
+3. Black about chapter: an independent scroll-linked arrival, the complete award photograph, a word-by-word statement, experience, facts, and toolkit.
+4. Cobalt technical projects: a held horizontal sequence on larger screens. Scroll position drives the project track and progress controls. Phones and short screens use vertical project sections.
+5. White learning chapter: a scroll-linked scale entrance, education, contained certificate thumbnails, original document dialogs, and creative recognition.
+6. Cobalt contact: a separate vertical arrival and large typographic close, followed by a black footer.
 
-## Visual review
+Native scrolling remains free; wheel events do not force visitors into a page. The fixed navigation follows each chapter and exposes all five destination links on desktop and in the phone/tablet menu.
 
-Custom Playwright checks and screenshot reviews replace the design skill's bundled draw/inspect/scenes scripts: those script resources were not accessible through the installed cloud skill reader. No claim is made that those bundled inspectors ran, or that a seeded direction was drawn.
+## Motion and implementation
 
-Round one found: Unicode arrows absent in the local font; some gallery rear faces distracting through the front ring; a missing space in the mobile role copy. Replaced important glyphs with SVGs, culled the rear half of the ring, and corrected the mobile copy. The gallery fallback now stays visible until the first rendered frame.
+React 19 owns the interface and state. Motion for React owns entrances, scroll values, chapter transitions, and the shared frame scheduler. Exactly one Lenis instance smooths scrolling. Three.js owns only the project gallery canvas. No GSAP is installed.
 
-Final review criteria: legible name and role on the first screen; one direct work CTA; equal margins; no horizontal document overflow at 1440, 768, and 390 pixels; real documents; clear project-cover provenance; native dialogs; reduced motion and no-JavaScript access. Browser validation evidence is recorded in the completion report. This is an implementation review, not an external design award score.
+The gallery loads dynamically near the viewport. Rendering is visibility and change driven, pixel ratio is bounded, and effects dispose their GPU resources. The original DOM project links remain available until the first rendered frame and after WebGL failure.
 
-## Cinematic refinement
+The motion toggle and system reduced-motion preference remove pinned layouts and the WebGL scene. Complete photos, document access, and readable project descriptions remain available. Build-time React rendering provides the same semantic content before hydration and without JavaScript.
 
-Visual thesis: Jenifer's combination of logic and creative media becomes a sequence of spatial portfolio chapters. The source portrait owns the opening; the real client project covers become a full-width cylindrical ribbon; the technical projects become a held horizontal sequence. Quiet about and learning chapters separate the two project scenes.
+## Visual review and validation
 
-Stack: one Lenis instance, Motion for React for bounded entrances and scroll values, and two dynamically loaded Three.js modules sharing one core bundle. No GSAP. Pointer effects are restricted to fine pointers. Renderers pause outside the viewport and on hidden documents, and stop drawing when the scene is at rest. Motion off aborts pending initialization and disposes both scenes.
+Custom Playwright checks and screenshot reviews are used because the design skill’s bundled inspector scripts are unavailable through the installed cloud reader. No external design award or inspector score is claimed.
 
-ROUND 1
-Seen in one second: a personal portrait and the oversized name.
-Idea (one sentence): Jenifer's real identity and portfolio become a sequence of three spatial chapters.
-Live thing: a draggable WebGL project ribbon with real destination links.
-Layout words by section: hero=portrait-stage / work=curved-ribbon / about=editorial-photo / projects=horizontal-sequence / learning=document-index / contact=typographic-close.
-Scores: design 7.5 · usability 7.5 · creativity 7.0 · content 8.0 → overall 7.5
-Caps applied: no external inspector score claimed; the bundled inspector resources remain unavailable.
-Top three problems (most visible first), each with the screenshot it shows in and the fix:
-1. Bright portions of the face became transparent in `/tmp/cinema-hero.png`; restrict the luminance key to the silhouette and keep the face/torso opaque.
-2. The initial protection ellipse revealed original background beside the head in `/tmp/cinema-hero-fixed.png`; tighten the protected region and darken partially transparent fringe pixels.
-3. Phone metadata was unnecessarily small in `/tmp/cinema-mobile-hero.png`; increase the motion control and bottom metadata, and preserve the supporting sentence's spacing.
+The cobalt review checks the complete portrait at 1440, 768, 390, and 320 pixel widths; the gallery framing; the original award photograph; certificate thumbnails and document dialogs; chapter entrances; and the horizontal technical-project sequence. Automated browser validation also covers responsive overflow, keyboard access, motion preferences, WebGL loss, all 19 documents, original PDF downloads, pre-rendered content, and the optional portable React export.
 
-ROUND 2
-Seen in one second: the original portrait framed by a dark field and the name.
-Idea (one sentence): a developer's logic, creative practice, and real work are explored through spatial chapters.
-Live thing: scroll, drag, or use the gallery buttons, then open a real project; visitors can switch off cinematic motion at any point.
-Layout words by section: hero=portrait-stage / work=curved-ribbon / about=editorial-photo / projects=horizontal-sequence / learning=document-index / contact=typographic-close.
-Scores: design 8.0 · usability 8.0 · creativity 7.5 · content 8.0 → overall 7.9
-Caps applied: no award or third-party score claimed. These are internal visual review scores, not bundled inspector results.
-Top three problems (most visible first), each with the screenshot it shows in and the fix:
-1. A narrow bright hair fringe remained around the keyed image in `/tmp/cinema-hero-fixed.png`; reduce the brightness of partially transparent silhouette pixels while preserving the face.
-2. A pinned technical project could receive keyboard focus offscreen; focus now moves that project into the held viewport immediately.
-3. Short landscape viewports cannot fit the pinned layouts; they now receive normal vertical sections rather than clipped controls.
-
-Remaining limitation: client-site previews remain original typographic project covers, not live screenshots. The source resume PDF is still the older original. Actual GPU performance should also be checked on a physical phone before public launch; the current browser uses software WebGL.
-
-## React implementation correction
-
-The frontend is now React 19 with Motion for React, Lenis, and Three.js. The earlier vanilla DOM controller was removed. Header state, gallery selection, project and certificate dialogs, mobile navigation, and notifications are React-owned. Motion `useScroll`, `useTransform`, `useMotionValueEvent`, `useAnimate`, `AnimatePresence`, and the shared frame scheduler replace the page-level imperative animation controller. Three.js is isolated behind `useWebGLScene`, with React readiness state and effect cleanup. Production markup is generated from the React tree and hydrated by React; it is not a static HTML UI injected into a React wrapper.
+Project covers are authored title cards, not live website screenshots. Content provenance and the older downloadable resume’s differences are recorded in CONTENT-SOURCES.md.

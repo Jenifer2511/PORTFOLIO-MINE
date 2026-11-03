@@ -10,3 +10,7 @@ The user's required frontend stack is React + Lenis + animation libraries. Keep 
 - `npm run build` pre-renders the React tree, which the client hydrates. `index.html` is only the Vite entry shell.
 - Validate with the production build and `npm run test:browser` when Playwright is available. Check mobile, reduced motion, native dialog focus, and WebGL failure fallbacks.
 - Each cloud task is isolated. Use the existing checkout; do not create a worktree unless the user asks.
+
+- Visual palette: black, white, and cobalt blue (#0047ff), per the user. Use substantial cobalt chapter backgrounds, not lime, mint, or coral accents.
+- Keep all original photos in full colour and fully visible. Use contained, bounded images; no cropping, portrait cutouts, zoom, background keying, or filters.
+- Give the page distinct scroll-triggered chapters with Motion and Lenis. Keep native scrolling and a reduced-motion alternative.
